@@ -5,6 +5,7 @@
 #include <list>
 #include <iostream>
 #include <iterator>
+#include <sstream>
 
 using namespace std;
 
@@ -15,6 +16,7 @@ const set<string> operators = {"+", "-", "/", "*"};
 
 // We make this a class rather than a function because we have a collection
 // of helper methods...
+
 template<typename Sequence, typename Output>
 class rpn_to_tac {
     private:
@@ -65,7 +67,19 @@ class rpn_to_tac {
 
 list<string> example_input = list<string>{"5", "1", "2", "+", "4", "*", "+", "3", "-"};
 
+list<string> tokenize(string input) {
+    stringstream strstr(input);
+    istream_iterator<string> start(strstr);
+    istream_iterator<string> finish;
+    return list<string>(start, finish);
+}
+
 int main() {
+    string input;
     ostream_iterator<string> out(cout);
-    rpn_to_tac<list<string>, ostream_iterator<string>>(example_input, out);
+    while(getline(cin, input)) {
+        list<string> expr = tokenize(input);
+        rpn_to_tac<list<string>, ostream_iterator<string>>(expr, out);
+        cout << endl;
+    }
 }
